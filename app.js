@@ -94,6 +94,16 @@ app.post("/login", async (req, res) => {
     }
 });
 
+app.get("/projects", async (req, res) => {
+    try {
+        const projects = await Resultss.find(); // Fetch all projects from database
+        res.json(projects); // Send projects data as JSON response
+    } catch (error) {
+        console.error("Error fetching projects:", error);
+        res.status(500).json({ error: "Failed to fetch projects. Please try again." });
+    }
+});
+
 app.listen(8000, () => {
     console.log("app is listening on port 8000");
 });
