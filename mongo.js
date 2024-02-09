@@ -22,7 +22,7 @@ const newSchema = new mongoose.Schema({
 },
   password: {
     type: String,
-    require: true,
+    required: true,
   },
   token: {
     type: String,
@@ -34,3 +34,4 @@ const Resultss = mongoose.model("Resultss", newSchema);
 module.exports = Resultss;
 
 
+ 
