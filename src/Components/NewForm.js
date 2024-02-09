@@ -1,29 +1,43 @@
 import React, { useState } from 'react';
-import '../css/styles.css'
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; 
+import '../css/styles.css';
 
-const NewForm = ({ onClose, onSubmit }) => {
+
+const NewForm = ({ onClose }) => {
+  const navigate=useNavigate()
   const [projectTitle, setProjectTitle] = useState('');
   const [developerName, setDeveloperName] = useState('');
   const [description, setDescription] = useState('');
   const [hostedURL, setHostedURL] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Validate the form data, you can add more validation logic as needed
 
-    // Create an object with the form data
-    const formData = {
-      projectTitle,
-      developerName,
-      description,
-      hostedURL,
-    };
+    try {
+      const formData = {
+        projectTitle,
+        developerName,
+        description,
+        hostedURL,
+      };
 
-    // Pass the form data to the parent component for further processing
-    onSubmit(formData);
+      // Send form data to the server
+      const response = await axios.post('http://localhost:8000/submitProject', formData);
 
-    // Close the form after submission
-    onClose();
+      // Check if the submission was successful
+      if (response.status === 200) {
+        navigate('/project')
+        // Close the form after successful submission
+        onClose();
+        alert('Project submitted successfully!');
+      } else {
+        alert('Failed to submit project. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error submitting project:', error);
+      alert('Failed to submit project. Please try again.');
+    }
   };
 
   return (
@@ -72,3 +86,4 @@ const NewForm = ({ onClose, onSubmit }) => {
 };
 
 export default NewForm;
+
